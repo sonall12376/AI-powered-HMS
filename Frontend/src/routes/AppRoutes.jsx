@@ -37,6 +37,7 @@ export default function AppRoutes() {
             {/* Admission Module */}
             <Route path="/admissions" element={<WardMonitor />} />
             <Route path="/admissions/:id" element={<AdmissionFile />} />
+            <Route path="/nurse/wards" element={<WardMonitor />} />
 
             {/* Emergency Module */}
             <Route path="/emergency/triage" element={<ERTriageBoard />} />
