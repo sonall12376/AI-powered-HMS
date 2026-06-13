@@ -13,6 +13,7 @@ const InvoiceDetail = lazy(() => import('../features/billing/pages/InvoiceDetail
 const WardMonitor = lazy(() => import('../features/admission/pages/WardMonitor'));
 const AdmissionFile = lazy(() => import('../features/admission/pages/AdmissionFile'));
 const ERTriageBoard = lazy(() => import('../features/emergency/pages/ERTriageBoard'));
+const ERCaseWorkspace = lazy(() => import('../features/emergency/pages/ERCaseWorkspace'));
 const NotificationCenter = lazy(() => import('../features/notifications/pages/NotificationCenter'));
 const ReportsDashboard = lazy(() => import('../features/reports/pages/ReportsDashboard'));
 const ExplainerChatPage = lazy(() => import('../features/ai-explainer/pages/ExplainerChatPage'));
@@ -41,6 +42,7 @@ export default function AppRoutes() {
 
             {/* Emergency Module */}
             <Route path="/emergency/triage" element={<ERTriageBoard />} />
+            <Route path="/emergency/case/:id" element={<ERCaseWorkspace />} />
 
             {/* Notifications Module */}
             <Route path="/notifications" element={<NotificationCenter />} />
