@@ -29,7 +29,7 @@ public class BillingService {
         this.paymentRepository = paymentRepository;
     }
 
-    @Transactional
+    //@Transactional
     public BillingInvoice createInvoice(CreateInvoiceDTO dto) {
         BillingInvoice invoice = new BillingInvoice();
         invoice.setInvoiceId("INV-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase());

@@ -56,13 +56,19 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handleGeneric(Exception ex) {
-        ErrorResponse.ErrorInfo errorInfo = new ErrorResponse.ErrorInfo(
-            "INTERNAL_SERVER_ERROR",
-            "An unexpected error occurred.",
-            null
-        );
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-            .body(new ErrorResponse(false, Instant.now(), errorInfo));
-    }
+public ResponseEntity<ErrorResponse> handleGeneric(Exception ex) {
+
+    System.err.println("=================================");
+    ex.printStackTrace();
+    System.err.println("=================================");
+
+    ErrorResponse.ErrorInfo errorInfo = new ErrorResponse.ErrorInfo(
+        "INTERNAL_SERVER_ERROR",
+        ex.getMessage(),
+        null
+    );
+
+    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+        .body(new ErrorResponse(false, Instant.now(), errorInfo));
+}
 }
