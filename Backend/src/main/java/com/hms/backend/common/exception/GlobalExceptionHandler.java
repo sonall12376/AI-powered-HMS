@@ -55,20 +55,31 @@ public class GlobalExceptionHandler {
             .body(new ErrorResponse(false, Instant.now(), errorInfo));
     }
 
+    @ExceptionHandler(org.springframework.web.server.ResponseStatusException.class)
+    public ResponseEntity<ErrorResponse> handleResponseStatusException(org.springframework.web.server.ResponseStatusException ex) {
+        ErrorResponse.ErrorInfo errorInfo = new ErrorResponse.ErrorInfo(
+            "RATE_LIMIT_EXCEEDED",
+            ex.getReason(),
+            null
+        );
+        return ResponseEntity.status(ex.getStatusCode())
+            .body(new ErrorResponse(false, java.time.Instant.now(), errorInfo));
+    }
+
     @ExceptionHandler(Exception.class)
-public ResponseEntity<ErrorResponse> handleGeneric(Exception ex) {
+    public ResponseEntity<ErrorResponse> handleGeneric(Exception ex) {
 
-    System.err.println("=================================");
-    ex.printStackTrace();
-    System.err.println("=================================");
+        System.err.println("=================================");
+        ex.printStackTrace();
+        System.err.println("=================================");
 
-    ErrorResponse.ErrorInfo errorInfo = new ErrorResponse.ErrorInfo(
-        "INTERNAL_SERVER_ERROR",
-        ex.getMessage(),
-        null
-    );
+        ErrorResponse.ErrorInfo errorInfo = new ErrorResponse.ErrorInfo(
+            "INTERNAL_SERVER_ERROR",
+            ex.getMessage(),
+            null
+        );
 
-    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-        .body(new ErrorResponse(false, Instant.now(), errorInfo));
-}
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            .body(new ErrorResponse(false, Instant.now(), errorInfo));
+    }
 }
