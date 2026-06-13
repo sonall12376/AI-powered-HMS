@@ -1,0 +1,150 @@
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id            String        @id @default(uuid())
+  email         String        @unique
+  passwordHash  String
+  role          String        // e.g. "SUPER_ADMIN", "DOCTOR", "PATIENT", etc.
+  status        String        @default("ACTIVE") // "ACTIVE", "SUSPENDED", "PENDING_ONBOARD"
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+
+  // Relations
+  patientProfile Patient?
+  auditLogs      AuditLog[]
+}
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  timestamp  DateTime @default(now())
+  userId     String?
+  action     String   // e.g. "UPDATE_PATIENT", "LOGIN_ATTEMPT_FAILED"
+  ipAddress  String
+  changes    String   // Stringified changes JSON
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+}
+
+model Patient {
+  id            String         @id @default(uuid())
+  sequenceId    String         @unique // Auto-generated e.g. PT-2026-0001
+  userId        String?        @unique
+  firstName     String
+  lastName      String
+  dob           DateTime
+  gender        String
+  phoneEnc      String         // AES-256-GCM encrypted
+  email         String
+  addressEnc    String         // AES-256-GCM encrypted
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+
+  user          User?          @relation(fields: [userId], references: [id])
+  appointments  Appointment[]
+  labTests      LabTest[]
+  prescriptions Prescription[]
+}
+
+model DoctorAvailability {
+  id           String   @id @default(uuid())
+  doctorId     String   // Maps to user_id of DOCTOR role
+  dayOfWeek    Int      // 0 = Sunday, 1 = Monday, etc.
+  startTime    String   // e.g. "09:00"
+  endTime      String   // e.g. "17:00"
+  slotInterval Int      @default(20) // Duration of each slot in minutes
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@unique([doctorId, dayOfWeek])
+}
+
+model BookingLock {
+  id         String   @id @default(uuid())
+  doctorId   String
+  slotTime   DateTime // Date and time of the slot
+  lockedBy   String   // Patient ID or Session ID
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+
+  // Ensure double booking does not occur during active lock
+  @@unique([doctorId, slotTime])
+}
+
+model Appointment {
+  id           String            @id @default(uuid())
+  patientId    String
+  doctorId     String            // User ID of Doctor
+  dateTime     DateTime
+  status       String            @default("REQUESTED") // "REQUESTED", "CONFIRMED", "IN_CONSULTATION", "COMPLETED", "CANCELLED"
+  notes        String?
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+
+  patient      Patient           @relation(fields: [patientId], references: [id])
+}
+
+model LabTest {
+  id        String      @id @default(uuid())
+  patientId String
+  doctorId  String
+  testName  String
+  status    String      @default("PENDING") // PENDING, SAMPLE_COLLECTED, PROCESSING, RESULTS_READY, COMPLETED
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+
+  patient   Patient     @relation(fields: [patientId], references: [id])
+  reports   LabReport[]
+}
+
+model LabReport {
+  id            String   @id @default(uuid())
+  labTestId     String   @unique
+  reportUrl     String?  // File path or base64 URL
+  resultSummary String
+  completedAt   DateTime @default(now())
+
+  labTest       LabTest  @relation(fields: [labTestId], references: [id], onDelete: Cascade)
+}
+
+model Medicine {
+  id            String         @id @default(uuid())
+  name          String
+  batchNo       String
+  price         Float
+  expiryDate    DateTime
+  stockQuantity Int
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  inventoryLogs InventoryLog[]
+}
+
+model InventoryLog {
+  id         String   @id @default(uuid())
+  medicineId String
+  action     String   // e.g. ADD_STOCK, DISPENSE, EXPIRED_REMOVED
+  quantity   Int
+  createdAt  DateTime @default(now())
+
+  medicine   Medicine @relation(fields: [medicineId], references: [id], onDelete: Cascade)
+}
+
+model Prescription {
+  id           String   @id @default(uuid())
+  patientId    String
+  doctorId     String
+  medicineName String
+  dosage       String
+  frequency    String
+  duration     String
+  status       String   @default("PENDING") // PENDING, DISPENSED
+  createdAt    DateTime @default(now())
+
+  patient      Patient  @relation(fields: [patientId], references: [id])
+}
+

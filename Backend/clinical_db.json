@@ -1,0 +1,49 @@
+{
+  "patient-1-uuid": {
+    "patientId": "patient-1-uuid",
+    "chronicConditions": [
+      {
+        "conditionName": "Hypertension",
+        "status": "Active",
+        "diagnosedDate": "2020-05-15T00:00:00.000Z"
+      }
+    ],
+    "allergies": [
+      {
+        "allergen": "Penicillin",
+        "severity": "Severe",
+        "reaction": "Anaphylaxis and respiratory shock"
+      }
+    ],
+    "pastOperations": [
+      {
+        "procedure": "Appendectomy",
+        "date": "2015-08-20T00:00:00.000Z",
+        "surgeon": "Dr. House"
+      }
+    ],
+    "familyHistory": [
+      {
+        "relationship": "Father",
+        "conditionName": "Myocardial Infarction"
+      }
+    ],
+    "updatedAt": "2026-06-13T07:00:12.520Z",
+    "createdAt": "2026-06-13T07:00:12.520Z"
+  },
+  "patient-2-uuid": {
+    "patientId": "patient-2-uuid",
+    "chronicConditions": [],
+    "allergies": [
+      {
+        "allergen": "Peanuts",
+        "severity": "Moderate",
+        "reaction": "Skin hives and swelling"
+      }
+    ],
+    "pastOperations": [],
+    "familyHistory": [],
+    "updatedAt": "2026-06-13T07:00:12.531Z",
+    "createdAt": "2026-06-13T07:00:12.531Z"
+  }
+}
