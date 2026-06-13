@@ -4,6 +4,8 @@ import { useAuth } from '../../../hooks/useAuth';
 
 export default function Sidebar({ isOpen }) {
   const { user } = useAuth();
+  console.log("USER DATA:", user);
+  console.log("ROLES:", user?.roles);
 
   // Define navigation config matching role filters
   const allNavItems = [
@@ -18,19 +20,27 @@ export default function Sidebar({ isOpen }) {
     { label: 'Notification Center', path: '/notifications', roles: ['DOCTOR', 'NURSE', 'PATIENT', 'BILLING_EXECUTIVE', 'RECEPTIONIST', 'PHARMACIST', 'LAB_TECHNICIAN', 'HOSPITAL_ADMIN'] },
     { label: 'Reports & BI', path: '/reports', roles: ['HOSPITAL_ADMIN', 'SUPER_ADMIN'] },
     { label: 'Prescription Chatbot', path: '/patient/prescriptions/explain', roles: ['PATIENT'] },
+    {
+      label: 'Inpatient Admissions',
+      path: '/admissions',
+      roles: ['HOSPITAL_ADMIN', 'NURSE', 'DOCTOR']
+    },
   ];
 
   // Filter items matching user role
   const visibleItems = allNavItems.filter((item) => {
     if (!user || !user.roles) return false;
-    return item.roles.some((role) => user.roles.includes(role));
+
+    return item.roles.some((role) =>
+      user.roles.includes(role) ||
+      user.roles.includes(`ROLE_${role}`)
+    );
   });
 
   return (
     <aside
-      className={`fixed top-0 bottom-0 left-0 z-50 bg-slate-900 text-slate-300 w-64 transform transition-transform duration-300 ease-in-out md:translate-x-0 ${
-        isOpen ? 'translate-x-0' : '-translate-x-full'
-      }`}
+      className={`fixed top-0 bottom-0 left-0 z-50 bg-slate-900 text-slate-300 w-64 transform transition-transform duration-300 ease-in-out md:translate-x-0 ${isOpen ? 'translate-x-0' : '-translate-x-full'
+        }`}
     >
       {/* Brand Header */}
       <div className="h-16 flex items-center gap-3 px-6 border-b border-slate-800">
@@ -65,10 +75,9 @@ export default function Sidebar({ isOpen }) {
               key={item.path}
               to={item.path}
               className={({ isActive }) =>
-                `flex items-center px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 ${
-                  isActive
-                    ? 'bg-sky-500 text-white shadow-md shadow-sky-500/20'
-                    : 'hover:bg-slate-800 hover:text-white'
+                `flex items-center px-4 py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 ${isActive
+                  ? 'bg-sky-500 text-white shadow-md shadow-sky-500/20'
+                  : 'hover:bg-slate-800 hover:text-white'
                 }`
               }
             >
