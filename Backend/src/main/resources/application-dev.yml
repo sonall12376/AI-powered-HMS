@@ -1,0 +1,14 @@
+spring:
+  data:
+    mongodb:
+      uri: ${MONGODB_URI:mongodb://localhost:27017/hms_member2}
+
+security:
+  jwt:
+    secret: ${JWT_SECRET:3cfa76f117c46f117a46f117c46f117a46f117c46f117a46f117c46f117a46f11} # 256-bit secret key
+    expiration-ms: 86400000 # 24 hours
+
+gemini:
+  api:
+    key: ${GEMINI_API_KEY:}
+    url: https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent
