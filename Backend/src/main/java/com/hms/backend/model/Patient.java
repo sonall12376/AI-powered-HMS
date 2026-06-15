@@ -24,6 +24,7 @@ public class Patient {
     private InsuranceDetails insuranceDetails;
     private String primaryDoctorId;
     private AiHealthProfile aiHealthProfile;
+    private MedicalHistory medicalHistory;
 
     private boolean active = true; // Soft delete flag
 
@@ -37,7 +38,7 @@ public class Patient {
 
     public Patient(String id, String patientId, PersonalInfo personalInfo, ContactInfo contactInfo, 
                    List<EmergencyContact> emergencyContacts, InsuranceDetails insuranceDetails, 
-                   String primaryDoctorId, AiHealthProfile aiHealthProfile, boolean active) {
+                   String primaryDoctorId, AiHealthProfile aiHealthProfile, MedicalHistory medicalHistory, boolean active) {
         this.id = id;
         this.patientId = patientId;
         this.personalInfo = personalInfo;
@@ -46,6 +47,7 @@ public class Patient {
         this.insuranceDetails = insuranceDetails;
         this.primaryDoctorId = primaryDoctorId;
         this.aiHealthProfile = aiHealthProfile;
+        this.medicalHistory = medicalHistory;
         this.active = active;
     }
 
@@ -73,6 +75,9 @@ public class Patient {
 
     public AiHealthProfile getAiHealthProfile() { return aiHealthProfile; }
     public void setAiHealthProfile(AiHealthProfile aiHealthProfile) { this.aiHealthProfile = aiHealthProfile; }
+
+    public MedicalHistory getMedicalHistory() { return medicalHistory; }
+    public void setMedicalHistory(MedicalHistory medicalHistory) { this.medicalHistory = medicalHistory; }
 
     public boolean isActive() { return active; }
     public void setActive(boolean active) { this.active = active; }
@@ -186,5 +191,32 @@ public class Patient {
         public void setRiskScore(Integer riskScore) { this.riskScore = riskScore; }
         public String getRiskCategory() { return riskCategory; }
         public void setRiskCategory(String riskCategory) { this.riskCategory = riskCategory; }
+    }
+
+    public static class MedicalHistory {
+        private List<String> allergies;
+        private List<String> previousDiseases;
+        private List<String> surgeries;
+        private List<String> medications;
+
+        public MedicalHistory() {}
+        public MedicalHistory(List<String> allergies, List<String> previousDiseases, List<String> surgeries, List<String> medications) {
+            this.allergies = allergies;
+            this.previousDiseases = previousDiseases;
+            this.surgeries = surgeries;
+            this.medications = medications;
+        }
+
+        public List<String> getAllergies() { return allergies; }
+        public void setAllergies(List<String> allergies) { this.allergies = allergies; }
+
+        public List<String> getPreviousDiseases() { return previousDiseases; }
+        public void setPreviousDiseases(List<String> previousDiseases) { this.previousDiseases = previousDiseases; }
+
+        public List<String> getSurgeries() { return surgeries; }
+        public void setSurgeries(List<String> surgeries) { this.surgeries = surgeries; }
+
+        public List<String> getMedications() { return medications; }
+        public void setMedications(List<String> medications) { this.medications = medications; }
     }
 }

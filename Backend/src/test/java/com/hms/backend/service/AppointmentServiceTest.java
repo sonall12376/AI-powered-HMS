@@ -49,7 +49,7 @@ public class AppointmentServiceTest {
                 "DOC-101",
                 LocalDate.now().plusDays(2),
                 "10:00",
-                Appointment.Status.PENDING,
+                Appointment.Status.REQUESTED,
                 "Routine Cardiologist follow up",
                 null,
                 null

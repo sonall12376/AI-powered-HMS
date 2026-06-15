@@ -32,7 +32,7 @@ interface Appointment {
   doctorId: string;
   appointmentDate: string;
   appointmentTime: string;
-  status: 'PENDING' | 'CONFIRMED' | 'COMPLETED' | 'CANCELLED';
+  status: 'REQUESTED' | 'CONFIRMED' | 'IN_CONSULTATION' | 'COMPLETED' | 'CANCELLED';
   reasonForVisit: string;
   aiNoShowDetails?: {
     noShowProbability: number;
@@ -520,7 +520,8 @@ export default function PatientDashboard() {
                       <span className={`inline-block px-2 py-1 rounded-full text-xs font-semibold ${
                         row.status === 'CONFIRMED' ? 'bg-blue-500/10 text-blue-400' :
                         row.status === 'COMPLETED' ? 'bg-emerald-500/10 text-emerald-400' :
-                        row.status === 'PENDING' ? 'bg-yellow-500/10 text-yellow-400' :
+                        row.status === 'IN_CONSULTATION' ? 'bg-purple-500/10 text-purple-400' :
+                        row.status === 'REQUESTED' ? 'bg-yellow-500/10 text-yellow-400' :
                         'bg-red-500/10 text-red-400'
                       }`}>
                         {row.status}
@@ -529,7 +530,7 @@ export default function PatientDashboard() {
                   },
                   {
                     header: 'Action',
-                    accessor: (row) => row.status === 'CONFIRMED' || row.status === 'PENDING' ? (
+                    accessor: (row) => row.status === 'CONFIRMED' || row.status === 'REQUESTED' ? (
                       <button
                         onClick={() => handleCancelAppointment(row.id || row.appointmentId)}
                         className="text-xs text-red-400 hover:text-red-300 transition-colors"

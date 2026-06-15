@@ -28,7 +28,7 @@ public class Appointment {
     private LocalDate appointmentDate;
     private String appointmentTime;
 
-    private Status status = Status.PENDING;
+    private Status status = Status.REQUESTED;
 
     private String reasonForVisit;
     private String cancellationReason;
@@ -42,8 +42,9 @@ public class Appointment {
     private Instant updatedAt;
 
     public enum Status {
-        PENDING,
+        REQUESTED,
         CONFIRMED,
+        IN_CONSULTATION,
         COMPLETED,
         CANCELLED
     }

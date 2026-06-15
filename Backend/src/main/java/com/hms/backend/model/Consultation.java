@@ -30,6 +30,7 @@ public class Consultation {
     private String clinicalNotes;
     private List<Diagnosis> diagnoses;
     private AiClinicalInsights aiClinicalInsights;
+    private List<String> labOrders;
 
     @CreatedDate
     private Instant createdAt;
@@ -38,7 +39,7 @@ public class Consultation {
 
     public Consultation(String id, String consultationId, String appointmentId, String patientId, String doctorId, 
                         Vitals vitals, List<String> symptoms, String clinicalNotes, List<Diagnosis> diagnoses, 
-                        AiClinicalInsights aiClinicalInsights) {
+                        AiClinicalInsights aiClinicalInsights, List<String> labOrders) {
         this.id = id;
         this.consultationId = consultationId;
         this.appointmentId = appointmentId;
@@ -49,6 +50,7 @@ public class Consultation {
         this.clinicalNotes = clinicalNotes;
         this.diagnoses = diagnoses;
         this.aiClinicalInsights = aiClinicalInsights;
+        this.labOrders = labOrders;
     }
 
     // Getters and Setters
@@ -81,6 +83,9 @@ public class Consultation {
 
     public AiClinicalInsights getAiClinicalInsights() { return aiClinicalInsights; }
     public void setAiClinicalInsights(AiClinicalInsights aiClinicalInsights) { this.aiClinicalInsights = aiClinicalInsights; }
+
+    public List<String> getLabOrders() { return labOrders; }
+    public void setLabOrders(List<String> labOrders) { this.labOrders = labOrders; }
 
     public Instant getCreatedAt() { return createdAt; }
     public void setCreatedAt(Instant createdAt) { this.createdAt = createdAt; }

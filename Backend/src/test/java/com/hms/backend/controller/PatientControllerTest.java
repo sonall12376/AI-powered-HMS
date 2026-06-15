@@ -71,6 +71,7 @@ public class PatientControllerTest {
                 null,
                 null,
                 null,
+                null,
                 true
         );
 

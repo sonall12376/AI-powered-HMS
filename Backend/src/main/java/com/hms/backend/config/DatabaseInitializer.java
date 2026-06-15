@@ -93,6 +93,7 @@ public class DatabaseInitializer implements CommandLineRunner {
                     insurance,
                     "DOC-101",
                     riskProfile,
+                    null,
                     true
             );
 
